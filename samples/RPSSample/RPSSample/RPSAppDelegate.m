@@ -29,8 +29,8 @@
 
 #pragma mark - Class methods
 
-+ (RPSCall)callFromAppLinkURL:(NSURL *)url {
-    BFURL *appLinkURL = [BFURL URLWithURL:url];
++ (RPSCall)callFromAppLinkURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication {
+    BFURL *appLinkURL = [BFURL URLWithInboundURL:url sourceApplication:sourceApplication];
     NSURL *appLinkTargetURL = [appLinkURL targetURL];
     if (!appLinkTargetURL) {
         return RPSCallNone;
@@ -64,7 +64,7 @@
                   sourceApplication:sourceApplication
                     fallbackHandler:^(FBAppCall *call) {
                         // Check for an app link to parse out a call to show
-                        RPSCall appLinkCall = [RPSAppDelegate callFromAppLinkURL:url];
+                        RPSCall appLinkCall = [RPSAppDelegate callFromAppLinkURL:url sourceApplication:sourceApplication];
                         if (appLinkCall != RPSCallNone) {
                             RPSDeeplyLinkedViewController *vc = [[RPSDeeplyLinkedViewController alloc] initWithCall:appLinkCall];
                             [self.navigationController presentViewController:vc animated:YES completion:nil];
@@ -90,16 +90,12 @@
     // Override point for customization after application launch.
 
     UIViewController *viewControllerGame;
-    FBUserSettingsViewController *viewControllerSettings;
+
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
         viewControllerGame = [[RPSGameViewController alloc] initWithNibName:@"RPSGameViewController_iPhone" bundle:nil];
     } else {
         viewControllerGame = [[RPSGameViewController alloc] initWithNibName:@"RPSGameViewController_iPad" bundle:nil];
     }
-    viewControllerSettings = [[FBUserSettingsViewController alloc] init];
-    viewControllerSettings.title = @"Facebook Settings";
-    viewControllerSettings.tabBarItem.image = [UIImage imageNamed:@"second"];
-
     self.navigationController = [[UINavigationController alloc] initWithRootViewController:viewControllerGame];
     self.window.rootViewController = self.navigationController;
     [self.window makeKeyAndVisible];

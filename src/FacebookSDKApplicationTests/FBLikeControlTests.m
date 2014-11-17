@@ -92,13 +92,11 @@ static void FBLikeControlTestsSwapClassMethod(Class klass, SEL selector1, SEL se
 {
     [super setUp];
 
-    [FBSettings enableBetaFeature:FBBetaFeaturesLikeButton];
-
     FBLikeControlTestsSwapClassMethod([FBViewImpressionTracker class],
                                       @selector(impressionTrackerWithEventName:),
                                       @selector(mockImpressionTrackerWithEventName:));
     FBLikeControlTestsSwapClassMethod([FBLikeActionController class],
-                                      @selector(likeActionControllerForObjectID:),
+                                      @selector(likeActionControllerForObjectID:objectType:),
                                       @selector(mockLikeActionControllerForObjectID:));
 }
 
@@ -110,7 +108,7 @@ static void FBLikeControlTestsSwapClassMethod(Class klass, SEL selector1, SEL se
                                       @selector(impressionTrackerWithEventName:),
                                       @selector(mockImpressionTrackerWithEventName:));
     FBLikeControlTestsSwapClassMethod([FBLikeActionController class],
-                                      @selector(likeActionControllerForObjectID:),
+                                      @selector(likeActionControllerForObjectID:objectType:),
                                       @selector(mockLikeActionControllerForObjectID:));
 }
 

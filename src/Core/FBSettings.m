@@ -47,6 +47,7 @@ NSString *const FBLoggingBehaviorPerformanceCharacteristics = @"perf_characteris
 NSString *const FBLoggingBehaviorAppEvents = @"app_events";
 NSString *const FBLoggingBehaviorInformational = @"informational";
 NSString *const FBLoggingBehaviorCacheErrors = @"cache_errors";
+NSString *const FBLoggingBehaviorUIControlErrors = @"ui_control_errors";
 NSString *const FBLoggingBehaviorDeveloperErrors = @"developer_errors";
 
 NSString *const FBLastAttributionPing = @"com.facebook.sdk:lastAttributionPing%@";
@@ -374,15 +375,9 @@ static NSString *g_version = @"3.18.0/cocos2d-x-v3.3";
         NSString *responseKey = [NSString stringWithFormat:FBLastInstallResponse, appID, nil];
 
         NSDate *lastPing = [defaults objectForKey:pingKey];
-        NSString *attributionID = [FBUtility attributionID];
-        NSString *advertiserID = [FBUtility advertiserID];
 
         if (lastPing) {
             // Short circuit
-            return;
-        }
-
-        if (!(attributionID || advertiserID)) {
             return;
         }
 
@@ -411,20 +406,15 @@ static NSString *g_version = @"3.18.0/cocos2d-x-v3.3";
                                    @try {
                                        if (settings.supportsAttribution) {
                                            // set up the HTTP POST to publish the attribution ID.
-                                           NSString *publishPath = [NSString stringWithFormat:FBPublishActivityPath, appID, nil];
-                                           NSMutableDictionary<FBGraphObject> *installActivity = [FBGraphObject graphObject];
-                                           [installActivity setObject:FBMobileInstallEvent forKey:@"event"];
-
-                                           if (attributionID) {
-                                               [installActivity setObject:attributionID forKey:@"attribution"];
-                                           }
-                                           if (advertiserID) {
-                                               [installActivity setObject:advertiserID forKey:@"advertiser_id"];
-                                           }
-                                           [FBUtility updateParametersWithEventUsageLimitsAndBundleInfo:installActivity accessAdvertisingTrackingStatus:YES];
+                                           NSMutableDictionary<FBGraphObject> *installActivity =
+                                               [FBUtility activityParametersDictionaryForEvent:FBMobileInstallEvent
+                                                                          includeAttributionID:YES
+                                                                            implicitEventsOnly:NO
+                                                                     shouldAccessAdvertisingID:settings.shouldAccessAdvertisingID];
 
                                            [installActivity setObject:[NSNumber numberWithBool:isAutoPublish].stringValue forKey:@"auto_publish"];
 
+                                           NSString *publishPath = [NSString stringWithFormat:FBPublishActivityPath, appID, nil];
                                            FBRequest *publishRequest = [[[FBRequest alloc] initForPostWithSession:nil graphPath:publishPath graphObject:installActivity] autorelease];
                                            [publishRequest startWithCompletionHandler:publishCompletionBlock];
                                        } else {
