@@ -1590,7 +1590,7 @@ typedef NS_ENUM(NSInteger, FBGraphApiErrorAccessTokenSubcode) {
     static NSString *agent = nil;
 
     if (!agent) {
-        agent = [[NSString stringWithFormat:@"%@.%@", kUserAgentBase, FB_IOS_SDK_VERSION_STRING] retain];
+        agent = [[NSString stringWithFormat:@"%@.%@", kUserAgentBase, [FBSettings sdkVersion]] retain];
     }
 
     return agent;

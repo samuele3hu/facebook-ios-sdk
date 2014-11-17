@@ -195,7 +195,7 @@
 
     // start with built-in parameters
     [parametersImpl setObject:@"touch" forKey:@"display"];
-    [parametersImpl setObject:FB_IOS_SDK_VERSION_STRING forKey:@"sdk"];
+    [parametersImpl setObject:[FBSettings sdkVersion] forKey:@"sdk"];
     [parametersImpl setObject:@"fbconnect://success" forKey:@"redirect_uri"];
     [parametersImpl setObject:[FBSettings defaultAppID] ? : @"" forKey:@"app_id"];
 

@@ -214,7 +214,7 @@ static FBAppBridge *g_sharedInstance;
                                         nil];
     NSMutableDictionary *bridgeParams = [NSMutableDictionary dictionaryWithObjectsAndKeys:
                                          appCall.ID, FBBridgeKey.actionID,
-                                         FB_IOS_SDK_VERSION_STRING, FBBridgeKey.sdkVersion,
+                                         [FBSettings sdkVersion], FBBridgeKey.sdkVersion,
                                          nil];
 
     [self addAppMetadataToDictionary:bridgeParams];

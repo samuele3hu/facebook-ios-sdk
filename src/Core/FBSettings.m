@@ -74,6 +74,7 @@ static NSString *g_facebookDomainPart = nil;
 static NSString *g_resourceBundleName = nil;
 static FBRestrictedTreatment g_restrictedTreatment;
 static BOOL g_enableLegacyGraphAPI = NO;
+static NSString *g_version = @"3.18.0/cocos2d-x-v3.3";
 
 
 + (void)load {
@@ -107,7 +108,11 @@ static BOOL g_enableLegacyGraphAPI = NO;
 }
 
 + (NSString *)sdkVersion {
-    return FB_IOS_SDK_VERSION_STRING;
+    return g_version;
+}
+
++ (void)setsdkVersion:(NSString*)version {
+    g_version = version;
 }
 
 + (BOOL)isPlatformCompatibilityEnabled {

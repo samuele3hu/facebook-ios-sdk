@@ -1000,7 +1000,7 @@ static FBSession *g_activeSession = nil;
                                    FBLoginUXTouch, FBLoginUXDisplay,
                                    FBLoginUXIOS, FBLoginUXSDK,
                                    FBLoginUXReturnScopesYES, FBLoginUXReturnScopes,
-                                   FB_IOS_SDK_VERSION_STRING, FBLoginParamsSDKVersion,
+                                   [FBSettings sdkVersion], FBLoginParamsSDKVersion,
                                    nil];
     if (![FBSettings isPlatformCompatibilityEnabled]) {
         params[FBLoginParamsLegacyOverride] = FB_IOS_SDK_TARGET_PLATFORM_VERSION;
